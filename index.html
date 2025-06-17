@@ -801,7 +801,7 @@
     </div>
     
     <a href="https://kiettrac.github.io/Profile-TracTuanKiet/" target="_blank" class="tech-support-banner">
-      Hỗ trợ kỹ thuật / Thuê viết web (ấn vào đây)
+      Hỗ trợ kỹ thuật / Thuê viết web - Trác Tuán Kiệt (ấn vào đây)
     </a>
 
   </body>
@@ -900,25 +900,14 @@ function createMap(latlng) {
 function closeMap() {
   if (marker && map) {
     const latlng = marker.getPosition();
+    const address = `Vị trí đã chọn: ${latlng.lat().toFixed(5)}, ${latlng.lng().toFixed(5)}`;
     
-    // Thử geocoding để lấy địa chỉ
-    if (google.maps.Geocoder) {
-      const geocoder = new google.maps.Geocoder();
-      geocoder.geocode({ 'location': latlng }, function(results, status) {
-        let address = `Tọa độ: ${latlng.lat().toFixed(5)}, ${latlng.lng().toFixed(5)}`;
-        
-        if (status === 'OK' && results[0]) {
-          address = results[0].formatted_address;
-        }
-        
-        setAddress(address);
-      });
-    } else {
-      // Nếu không có geocoder, chỉ hiển thị tọa độ
-      const address = `Tọa độ: ${latlng.lat().toFixed(5)}, ${latlng.lng().toFixed(5)}`;
-      setAddress(address);
+    if (currentMapTarget === "pickup") {
+      document.getElementById("pickupPoint").value = address;
+    } else if (currentMapTarget === "dropoff") {
+      document.getElementById("dropoffPoint").value = address;
     }
-  } else {
+    
     document.getElementById("mapModal").style.display = "none";
   }
 }
