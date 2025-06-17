@@ -807,98 +807,195 @@
   </body>
 
   <script>
-    function initMap() {}
+let currentMapTarget = null;
+let map, marker;
+let isMapLoaded = false;
 
-    let currentMapTarget = null;
-    let map, marker;
+// Khởi tạo map khi Google Maps API đã load xong
+function initMap() {
+  isMapLoaded = true;
+  console.log('Google Maps API loaded successfully');
+}
 
-    function handleServiceTypeChange() {
-      const type = document.getElementById("serviceType").value;
-      document.getElementById("productNameContainer").style.display = (type === "mua" || type === "chohang") ? "block" : "none";
-      document.getElementById("quantityContainer").style.display = (type === "chokhach") ? "block" : "none";
+function handleServiceTypeChange() {
+  const type = document.getElementById("serviceType").value;
+  document.getElementById("productNameContainer").style.display = (type === "mua" || type === "chohang") ? "block" : "none";
+  document.getElementById("quantityContainer").style.display = (type === "chokhach") ? "block" : "none";
+}
+
+function openMap(type) {
+  if (!isMapLoaded) {
+    alert("Bản đồ đang tải, vui lòng thử lại sau vài giây");
+    return;
+  }
+
+  currentMapTarget = type;
+  document.getElementById("mapModal").style.display = "block";
+
+  if (!map) {
+    // Thử lấy vị trí hiện tại
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        function(position) {
+          const latlng = { 
+            lat: position.coords.latitude, 
+            lng: position.coords.longitude 
+          };
+          createMap(latlng);
+        },
+        function(error) {
+          console.log('Geolocation error:', error);
+          // Nếu không lấy được vị trí, dùng tọa độ Long Xuyên
+          const longXuyenCoords = { lat: 10.3756, lng: 105.4339 };
+          createMap(longXuyenCoords);
+        },
+        {
+          timeout: 5000,
+          enableHighAccuracy: true
+        }
+      );
+    } else {
+      // Trình duyệt không hỗ trợ geolocation
+      const longXuyenCoords = { lat: 10.3756, lng: 105.4339 };
+      createMap(longXuyenCoords);
     }
+  }
+}
 
-    function openMap(type) {
-      currentMapTarget = type;
-      document.getElementById("mapModal").style.display = "block";
-
-      if (!map) {
-        navigator.geolocation.getCurrentPosition(pos => {
-          const latlng = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-          map = new google.maps.Map(document.getElementById("map"), {
-            center: latlng,
-            zoom: 16,
-            disableDefaultUI: true,
-          });
-          marker = new google.maps.Marker({
-            position: latlng,
-            map: map,
-            draggable: true,
-            animation: google.maps.Animation.DROP,
-          });
-
-          map.addListener("click", (e) => {
-            marker.setPosition(e.latLng);
-          });
-          
-        }, () => {
-           const longXuyenCoords = { lat: 10.37, lng: 105.43 };
-           map = new google.maps.Map(document.getElementById("map"), { center: longXuyenCoords, zoom: 14 });
-           marker = new google.maps.Marker({ position: longXuyenCoords, map: map, draggable: true });
-        });
-      }
-    }
-
-    function closeMap() {
-      if (marker) {
-        const latlng = marker.getPosition();
-        const geocoder = new google.maps.Geocoder();
-        geocoder.geocode({ 'location': latlng }, (results, status) => {
-          let address = `Tọa độ: ${latlng.lat().toFixed(5)}, ${latlng.lng().toFixed(5)}`;
-          if (status === 'OK' && results[0]) {
-            address = results[0].formatted_address;
-          }
-          
-          if (currentMapTarget === "pickup") document.getElementById("pickupPoint").value = address;
-          else document.getElementById("dropoffPoint").value = address;
-
-          document.getElementById("mapModal").style.display = "none";
-        });
-      } else {
-        document.getElementById("mapModal").style.display = "none";
-      }
-    }
-
-    document.getElementById("bookingForm").addEventListener("submit", function (e) {
-      e.preventDefault();
-      
-      const submitBtn = document.getElementById("form-submit-btn");
-      const successMessage = document.getElementById("successMessage");
-      const formData = new FormData(this);
-
-      submitBtn.disabled = true;
-      submitBtn.textContent = "Đang gửi...";
-      successMessage.style.display = 'none';
-
-      const scriptURL = "https://script.google.com/macros/s/AKfycbx3SZCbh9QZyWg9wHrTuL5XUlPNfXcf-8JuxYHZ0jsGdPPIg8H7GZrX7dLvFANa25PwYA/exec";
-      
-      fetch(scriptURL, { method: 'POST', body: formData })
-        .then(response => {
-          console.log('Success!', response);
-          successMessage.style.display = 'block';
-          document.getElementById("bookingForm").reset();
-          handleServiceTypeChange();
-        })
-        .catch(error => {
-          console.error('Error!', error.message);
-          alert("Đã có lỗi xảy ra. Vui lòng thử lại hoặc gọi trực tiếp.");
-        })
-        .finally(() => {
-          submitBtn.disabled = false;
-          submitBtn.textContent = "Gửi Yêu Cầu";
-        });
+function createMap(latlng) {
+  try {
+    map = new google.maps.Map(document.getElementById("map"), {
+      center: latlng,
+      zoom: 16,
+      disableDefaultUI: false,
+      zoomControl: true,
+      streetViewControl: false,
+      fullscreenControl: false,
     });
 
-  </script>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&libraries=geocoding"></script>
-</html>
+    marker = new google.maps.Marker({
+      position: latlng,
+      map: map,
+      draggable: true,
+      animation: google.maps.Animation.DROP,
+    });
+
+    // Lắng nghe sự kiện click trên map
+    map.addListener("click", function(event) {
+      marker.setPosition(event.latLng);
+    });
+
+    // Lắng nghe sự kiện kéo marker
+    marker.addListener("dragend", function(event) {
+      map.setCenter(event.latLng);
+    });
+
+  } catch (error) {
+    console.error('Error creating map:', error);
+    alert("Không thể tải bản đồ. Vui lòng nhập địa chỉ thủ công.");
+    closeMap();
+  }
+}
+
+function closeMap() {
+  if (marker && map) {
+    const latlng = marker.getPosition();
+    
+    // Thử geocoding để lấy địa chỉ
+    if (google.maps.Geocoder) {
+      const geocoder = new google.maps.Geocoder();
+      geocoder.geocode({ 'location': latlng }, function(results, status) {
+        let address = `Tọa độ: ${latlng.lat().toFixed(5)}, ${latlng.lng().toFixed(5)}`;
+        
+        if (status === 'OK' && results[0]) {
+          address = results[0].formatted_address;
+        }
+        
+        setAddress(address);
+      });
+    } else {
+      // Nếu không có geocoder, chỉ hiển thị tọa độ
+      const address = `Tọa độ: ${latlng.lat().toFixed(5)}, ${latlng.lng().toFixed(5)}`;
+      setAddress(address);
+    }
+  } else {
+    document.getElementById("mapModal").style.display = "none";
+  }
+}
+
+function setAddress(address) {
+  if (currentMapTarget === "pickup") {
+    document.getElementById("pickupPoint").value = address;
+  } else if (currentMapTarget === "dropoff") {
+    document.getElementById("dropoffPoint").value = address;
+  }
+  
+  document.getElementById("mapModal").style.display = "none";
+}
+
+// Form submission
+document.getElementById("bookingForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+  
+  const submitBtn = document.getElementById("form-submit-btn");
+  const successMessage = document.getElementById("successMessage");
+  const formData = new FormData(this);
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Đang gửi...";
+  successMessage.style.display = 'none';
+
+  const scriptURL = "https://script.google.com/macros/s/AKfycbx3SZCbh9QZyWg9wHrTuL5XUlPNfXcf-8JuxYHZ0jsGdPPIg8H7GZrX7dLvFANa25PwYA/exec";
+  
+  fetch(scriptURL, { method: 'POST', body: formData })
+    .then(response => {
+      console.log('Success!', response);
+      successMessage.style.display = 'block';
+      document.getElementById("bookingForm").reset();
+      handleServiceTypeChange();
+    })
+    .catch(error => {
+      console.error('Error!', error.message);
+      alert("Đã có lỗi xảy ra. Vui lòng thử lại hoặc gọi trực tiếp.");
+    })
+    .finally(() => {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Gửi Yêu Cầu";
+    });
+});
+
+// Thêm fallback nếu Maps không load được
+setTimeout(function() {
+  if (!isMapLoaded) {
+    console.warn('Google Maps failed to load, enabling manual input');
+    // Cho phép nhập thủ công
+    document.getElementById("pickupPoint").onclick = null;
+    document.getElementById("dropoffPoint").onclick = null;
+    document.getElementById("pickupPoint").placeholder = "Nhập địa chỉ đón/mua hàng";
+    document.getElementById("dropoffPoint").placeholder = "Nhập địa chỉ giao/đích đến";
+    document.getElementById("pickupPoint").readOnly = false;
+    document.getElementById("dropoffPoint").readOnly = false;
+  }
+}, 10000); // Chờ 10 giây
+
+</script>
+
+<script async defer 
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&libraries=geometry"
+  onerror="handleMapError()">
+</script>
+
+<script>
+function handleMapError() {
+  console.error('Failed to load Google Maps');
+  // Tự động chuyển sang chế độ nhập thủ công
+  document.getElementById("pickupPoint").onclick = null;
+  document.getElementById("dropoffPoint").onclick = null;
+  document.getElementById("pickupPoint").placeholder = "Nhập địa chỉ đón/mua hàng";
+  document.getElementById("dropoffPoint").placeholder = "Nhập địa chỉ giao/đích đến";
+  document.getElementById("pickupPoint").readOnly = false;
+  document.getElementById("dropoffPoint").readOnly = false;
+  
+  alert("Không thể tải bản đồ. Vui lòng nhập địa chỉ thủ công.");
+}
+</script>
