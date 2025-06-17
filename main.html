@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ALO SHIP - Dịch vụ Vận chuyển & Hỗ trợ Long Xuyên</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap");
+
+      :root {
+        --primary-color: #667eea;
+        --secondary-color: #764ba2;
+        --text-dark: #2c3e50;
+        --text-light: #555;
+        --bg-light: #f8fafc;
+        --white: #ffffff;
+        --border-color: #e2e8f0;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Be Vietnam Pro", sans-serif;
+        line-height: 1.7;
+        color: var(--text-dark);
+        background: var(--bg-light);
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .top-booking-banner {
+        background: linear-gradient(135deg, #feca57, #ff9f43);
+        color: var(--text-dark);
+        text-align: center;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border-bottom: 3px solid #f39c12;
+        min-height: 55px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 5px 20px;
+      }
+
+      .top-booking-banner:hover {
+        background: linear-gradient(135deg, #ff9f43, #feca57);
+        color: var(--white);
+      }
+
+      .tech-support-banner {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: rgba(10, 10, 10, 0.9);
+        color: var(--white);
+        text-align: center;
+        font-size: 0.9rem;
+        z-index: 1000;
+        text-decoration: none;
+        backdrop-filter: blur(5px);
+        transition: background-color 0.3s ease;
+        min-height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 5px 15px;
+      }
+
+      .tech-support-banner:hover {
+        background-color: rgba(0, 0, 0, 1);
+      }
+
+      .header {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: var(--white);
+        padding: 80px 0;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .logo {
+        font-size: 3rem;
+        font-weight: 800;
+        margin-bottom: 15px;
+        text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      }
+
+      .tagline {
+        font-size: 1.3rem;
+        font-weight: 300;
+        margin-bottom: 30px;
+        opacity: 0.9;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .contact-header {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.15);
+        padding: 12px 25px;
+        border-radius: 50px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+      
+      .contact-header a {
+        color: inherit;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+      }
+
+      .contact-header .phone {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-left: 10px;
+      }
+
+      .main-content {
+        padding: 60px 0;
+        padding-bottom: 100px;
+      }
+
+      .section {
+        margin-bottom: 80px;
+      }
+
+      .section-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 40px;
+        text-align: center;
+        position: relative;
+      }
+
+      .section-title::after {
+        content: "";
+        position: absolute;
+        bottom: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        border-radius: 2px;
+      }
+      
+      .intro-text {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        text-align: center;
+        max-width: 800px;
+        margin: 50px auto 0;
+        color: var(--text-light);
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+        margin-top: 50px;
+      }
+
+      .feature-item {
+        text-align: center;
+        padding: 20px;
+      }
+
+      .feature-icon {
+        width: 70px;
+        height: 70px;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        color: var(--white);
+        margin: 0 auto 20px;
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+      }
+
+      .feature-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        margin-bottom: 10px;
+      }
+
+      .feature-desc {
+        color: var(--text-light);
+      }
+      
+      .stats-section {
+        background: linear-gradient(135deg, #2c3e50, #34495e);
+        color: var(--white);
+        padding: 80px 0;
+        border-radius: 20px;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 40px;
+        text-align: center;
+      }
+
+      .stat-number {
+        font-size: 3rem;
+        font-weight: 800;
+        color: #48dbfb;
+        margin-bottom: 10px;
+        display: block;
+      }
+
+      .stat-label {
+        font-size: 1.1rem;
+        opacity: 0.9;
+      }
+
+      .price-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 30px;
+        margin-top: 50px;
+      }
+
+      .price-card {
+        background: var(--white);
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+      }
+      .price-card-header {
+        padding: 25px;
+        background: linear-gradient(135deg, var(--text-dark), #4a6fa5);
+        color: var(--white);
+      }
+      .price-card-header h3 {
+        font-size: 1.6rem;
+        margin: 0;
+        font-weight: 700;
+      }
+      .price-card-body {
+        padding: 30px;
+        flex-grow: 1;
+      }
+      .price-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 15px 0;
+        border-bottom: 1px dashed var(--border-color);
+        font-size: 1.1rem;
+      }
+      .price-item:last-child {
+        border-bottom: none;
+      }
+      .price-label {
+        color: var(--text-light);
+      }
+      .price-value {
+        font-weight: 700;
+        color: var(--primary-color);
+      }
+      .price-card-footer {
+        background: var(--bg-light);
+        padding: 20px 30px;
+        font-style: italic;
+        color: var(--text-light);
+        text-align: center;
+        border-top: 1px solid var(--border-color);
+      }
+      .surcharge-note {
+        margin-top: 30px;
+        text-align: center;
+        font-size: 1.2rem;
+        font-weight: 600;
+        background: #fffbe6;
+        color: #f39c12;
+        padding: 15px;
+        border-radius: 10px;
+        border: 1px solid #ffe58f;
+      }
+      
+      .booking-section {
+        background: var(--white);
+        padding: 50px 40px;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        margin-top: 50px;
+        border-top: 5px solid;
+        border-image: linear-gradient(90deg, var(--primary-color), var(--secondary-color)) 1;
+      }
+
+      .booking-form {
+        display: grid;
+        gap: 25px;
+      }
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .form-group label {
+        font-weight: 600;
+        color: var(--text-dark);
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+      }
+
+      .form-group input,
+      .form-group select {
+        padding: 15px;
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        font-family: inherit;
+        background-color: var(--bg-light);
+      }
+
+      .form-group input:focus,
+      .form-group select:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        background-color: var(--white);
+      }
+
+      .submit-btn {
+        padding: 18px 40px;
+        border: none;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: var(--white);
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        width: 100%;
+        margin-top: 15px;
+      }
+
+      .submit-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 25px rgba(102, 126, 234, 0.4);
+      }
+
+      .submit-btn:disabled {
+        background: #bdc3c7;
+        cursor: not-allowed;
+        box-shadow: none;
+        transform: translateY(0);
+      }
+
+      #successMessage {
+        text-align: center;
+        background-color: #e8f5e9;
+        color: #2e7d32;
+        padding: 15px;
+        border-radius: 10px;
+        border-left: 5px solid #4caf50;
+      }
+      
+      .testimonials-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-top: 50px;
+      }
+      .testimonial-card {
+        background: var(--white);
+        padding: 40px 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        text-align: left;
+        transition: all 0.3s ease;
+        border-top: 4px solid #feca57;
+        position: relative;
+        overflow: hidden;
+      }
+      .testimonial-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+      }
+      .stars {
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+        color: #ffd700;
+      }
+      .testimonial-text {
+        font-size: 1.05rem;
+        line-height: 1.7;
+        color: #444;
+        margin-bottom: 25px;
+        font-style: italic;
+        position: relative;
+        z-index: 1;
+      }
+      .testimonial-text::before {
+        content: '“';
+        font-size: 6rem;
+        color: var(--bg-light);
+        position: absolute;
+        top: -30px;
+        left: -20px;
+        font-family: serif;
+        line-height: 1;
+        z-index: 0;
+      }
+      .customer-info {
+        border-top: 1px solid var(--border-color);
+        padding-top: 20px;
+        position: relative;
+        z-index: 1;
+      }
+      .customer-name {
+        font-weight: 600;
+        color: var(--text-dark);
+        font-size: 1.1rem;
+        margin-bottom: 5px;
+      }
+      .customer-location {
+        color: var(--text-light);
+        font-size: 0.95rem;
+      }
+
+      #mapModal {
+        display:none; 
+        position:fixed; 
+        top:0; 
+        left:0; 
+        width:100vw; 
+        height:100vh; 
+        background:rgba(0,0,0,0.7); 
+        z-index:1001;
+      }
+      
+      #mapModal .modal-content {
+        width:90%; 
+        height:90%; 
+        max-width: 800px;
+        max-height: 600px;
+        margin: 5vh auto; 
+        background:white; 
+        position:relative;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      #map {
+        width:100%; 
+        height:100%;
+      }
+      #mapModal .close-btn {
+        position:absolute; 
+        top:10px; 
+        right:10px; 
+        z-index:9999;
+        background: var(--white);
+        border: none;
+        padding: 8px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        font-weight: bold;
+      }
+
+      .footer {
+        background: var(--text-dark);
+        color: var(--white);
+        padding: 40px 0;
+        text-align: center;
+      }
+
+      .footer-text {
+        opacity: 0.8;
+        margin-bottom: 20px;
+      }
+
+      .footer-brand {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #48dbfb;
+      }
+
+      @media (max-width: 768px) {
+        .logo {
+          font-size: 2.5rem;
+        }
+        .tagline {
+          font-size: 1.1rem;
+        }
+        .section-title {
+          font-size: 2rem;
+        }
+        .booking-section {
+          padding: 30px 20px;
+        }
+        .testimonials-grid {
+          grid-template-columns: 1fr;
+        }
+        .stats-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .features-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="top-booking-banner" onclick="document.getElementById('booking-section-anchor').scrollIntoView();">
+      Bạn muốn đặt dịch vụ? Hãy nhấn vào đây để đặt ngay!
+    </div>
+
+    <header class="header">
+      <div class="container">
+        <h1 class="logo">ALO SHIP</h1>
+        <p class="tagline">
+          Dịch vụ vận chuyển & hỗ trợ chuyên nghiệp, nhanh chóng tại Long Xuyên
+        </p>
+        <div class="contact-header">
+          <a href="tel:0328258428">
+            <span>📞</span>
+            <span class="phone">0328.258.428</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <div class="container">
+        
+        <section class="section">
+          <h2 class="section-title">Về chúng tôi</h2>
+          <p class="intro-text">
+            ALO SHIP là đơn vị tiên phong trong lĩnh vực cung cấp dịch vụ vận
+            chuyển và hỗ trợ cá nhân tại Long Xuyên, An Giang. Với phương châm
+            "ALO LÀ SHIP", chúng tôi cam kết mang đến cho khách hàng những dịch
+            vụ nhanh chóng, tin cậy và chuyên nghiệp nhất. Đội ngũ nhân viên
+            giàu kinh nghiệm, trang thiết bị hiện đại cùng quy trình làm việc
+            khoa học giúp chúng tôi luôn đáp ứng mọi nhu cầu của khách hàng một
+            cách tối ưu nhất.
+          </p>
+        </section>
+
+        <section class="section" id="price-section">
+          <h2 class="section-title">Bảng giá dịch vụ</h2>
+          <div class="price-grid">
+            <div class="price-card">
+              <div class="price-card-header">
+                <h3>🚲 Giao hàng + Đưa rước khách</h3>
+              </div>
+              <div class="price-card-body">
+                <div class="price-item">
+                  <span class="price-label">2 km đầu tiên</span>
+                  <span class="price-value">12.000đ</span>
+                </div>
+                <div class="price-item">
+                  <span class="price-label">Từ km thứ 3 trở đi</span>
+                  <span class="price-value">5.000đ / km</span>
+                </div>
+              </div>
+              <div class="price-card-footer">
+                Giao hàng đúng giờ – Giá rẻ bất ngờ
+              </div>
+            </div>
+
+            <div class="price-card">
+              <div class="price-card-header">
+                <h3>🚕 Chở khách + Kèm xe</h3>
+              </div>
+              <div class="price-card-body">
+                <div class="price-item">
+                  <span class="price-label">2 km đầu tiên</span>
+                  <span class="price-value">26.000đ</span>
+                </div>
+                <div class="price-item">
+                  <span class="price-label">Từ km thứ 3 trở đi</span>
+                  <span class="price-value">10.000đ / km</span>
+                </div>
+              </div>
+              <div class="price-card-footer">
+                Phù hợp đi xa, có hành lý hoặc chở kèm xe
+              </div>
+            </div>
+          </div>
+          <div class="surcharge-note">
+            ⚠️ Phụ phí: +10.000đ / đơn sau 22h (10 giờ tối)
+          </div>
+        </section>
+        
+        <section class="section">
+          <h2 class="section-title">Tại sao chọn ALO SHIP?</h2>
+          <div class="features-grid">
+            <div class="feature-item">
+              <div class="feature-icon">⚡</div>
+              <h3 class="feature-title">Nhanh chóng</h3>
+              <p class="feature-desc">
+                Phản hồi ngay lập tức, xử lý yêu cầu trong thời gian sớm nhất
+              </p>
+            </div>
+
+            <div class="feature-item">
+              <div class="feature-icon">🛡️</div>
+              <h3 class="feature-title">Tin cậy</h3>
+              <p class="feature-desc">
+                Đội ngũ nhân viên chuyên nghiệp, có kinh nghiệm và trách nhiệm
+                cao
+              </p>
+            </div>
+
+            <div class="feature-item">
+              <div class="feature-icon">💎</div>
+              <h3 class="feature-title">Chất lượng</h3>
+              <p class="feature-desc">
+                Cam kết chất lượng dịch vụ tốt nhất với giá cả hợp lý
+              </p>
+            </div>
+
+            <div class="feature-item">
+              <div class="feature-icon">📱</div>
+              <h3 class="feature-title">Tiện lợi</h3>
+              <p class="feature-desc">
+                Chỉ cần một cuộc gọi, chúng tôi sẽ có mặt để hỗ trợ bạn
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="stats-section">
+            <div class="container">
+              <div class="stats-grid">
+                <div class="stat-item">
+                  <span class="stat-number">1000+</span>
+                  <p class="stat-label">Khách hàng hài lòng</p>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-number">16/7</span>
+                  <p class="stat-label">Hỗ trợ khách hàng</p>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-number">100%</span>
+                  <p class="stat-label">Cam kết chất lượng</p>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-number">5★</span>
+                  <p class="stat-label">Đánh giá từ khách hàng</p>
+                </div>
+              </div>
+            </div>
+        </section>
+        
+        <section class="section" id="booking-section-anchor">
+          <h2 class="section-title">Đặt dịch vụ trực tuyến</h2>
+          <div class="booking-section">
+            <form class="booking-form" id="bookingForm">
+              <div class="form-group">
+                <label for="customerName">Họ và tên *</label>
+                <input type="text" id="customerName" name="customerName" required placeholder="Nhập họ và tên của bạn" />
+              </div>
+              <div class="form-group">
+                <label for="customerPhone">Số điện thoại *</label>
+                <input type="tel" id="customerPhone" name="customerPhone" required placeholder="Nhập số điện thoại" />
+              </div>
+
+              <div class="form-group">
+                <label for="pickupPoint">Điểm đón / Mua hàng *</label>
+                <input type="text" id="pickupPoint" name="pickupPoint" required placeholder="Nhấn để chọn trên bản đồ" onclick="openMap('pickup')" readonly />
+              </div>
+              <div class="form-group">
+                <label for="dropoffPoint">Điểm giao / Đích đến *</label>
+                <input type="text" id="dropoffPoint" name="dropoffPoint" required placeholder="Nhấn để chọn trên bản đồ" onclick="openMap('dropoff')" readonly />
+              </div>
+
+              <div class="form-group">
+                <label for="serviceType">Loại dịch vụ *</label>
+                <select id="serviceType" name="serviceType" required onchange="handleServiceTypeChange()">
+                  <option value="" disabled selected>-- Chọn loại dịch vụ --</option>
+                  <option value="mua">Mua đồ hộ</option>
+                  <option value="chohang">Giao hàng / Chở đồ</option>
+                  <option value="chokhach">Chở khách</option>
+                  <option value="laixe">Lái xe hộ (kèm xe)</option>
+                </select>
+              </div>
+
+              <div id="productNameContainer" class="form-group" style="display: none">
+                <label for="productName">Tên hàng hóa / Ghi chú *</label>
+                <input type="text" id="productName" name="productName" placeholder="VD: 1 thùng mì, giao tài liệu..." />
+              </div>
+
+              <div id="quantityContainer" class="form-group" style="display: none">
+                <label for="quantity">Số lượng người *</label>
+                <input type="number" id="quantity" name="quantity" min="1" placeholder="VD: 2 người" />
+              </div>
+              
+              <div id="successMessage" style="display: none;">
+                ✨ Cảm ơn quý khách! Yêu cầu đã được gửi thành công. Chúng tôi sẽ liên hệ lại ngay!
+              </div>
+
+              <button type="submit" class="submit-btn" id="form-submit-btn">Gửi Yêu Cầu</button>
+            </form>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2 class="section-title">Khách hàng nói gì về chúng tôi</h2>
+          <div class="testimonials-grid">
+            <div class="testimonial-card">
+              <div class="stars">⭐⭐⭐⭐⭐</div>
+              <p class="testimonial-text">
+                "Dịch vụ của ALO SHIP thật sự tuyệt vời! Anh shipper rất nhiệt
+                tình, giao hàng nhanh và an toàn. Tôi đã sử dụng dịch vụ nhiều
+                lần và luôn hài lòng. Chắc chắn sẽ tiếp tục ủng hộ!"
+              </p>
+              <div class="customer-info">
+                <div class="customer-name">Chị Mai Lan</div>
+                <div class="customer-location">Long Xuyên, An Giang</div>
+              </div>
+            </div>
+            <div class="testimonial-card">
+              <div class="stars">⭐⭐⭐⭐⭐</div>
+              <p class="testimonial-text">
+                "Tôi thường xuyên sử dụng dịch vụ đưa đón của ALO SHIP. Lái xe
+                rất chuyên nghiệp, đúng giờ và xe luôn sạch sẽ. Giá cả hợp lý,
+                phục vụ 24/7 rất tiện lợi cho công việc của tôi."
+              </p>
+              <div class="customer-info">
+                <div class="customer-name">Anh Minh Tuấn</div>
+                <div class="customer-location">Phường Mỹ Bình, Long Xuyên</div>
+              </div>
+            </div>
+            <div class="testimonial-card">
+              <div class="stars">⭐⭐⭐⭐⭐</div>
+              <p class="testimonial-text">
+                "ALO SHIP đã giúp tôi rất nhiều trong việc chuyển tiền và mua
+                hàng hộ. Nhân viên rất uy tín, làm việc nhanh gọn. Chỉ cần gọi
+                điện là được hỗ trợ ngay lập tức. Highly recommended!"
+              </p>
+              <div class="customer-info">
+                <div class="customer-name">Cô Thanh Hương</div>
+                <div class="customer-location">Phường Mỹ Long, Long Xuyên</div>
+              </div>
+            </div>
+            <div class="testimonial-card">
+              <div class="stars">⭐⭐⭐⭐⭐</div>
+              <p class="testimonial-text">
+                "Dịch vụ lái xe hộ của ALO SHIP rất chuyên nghiệp. Khi tôi uống
+                rượu không thể lái xe về nhà, chỉ cần gọi là có người đến ngay.
+                An toàn và tiện lợi, giá cả phải chăng."
+              </p>
+              <div class="customer-info">
+                <div class="customer-name">Anh Văn Nam</div>
+                <div class="customer-location">Phường Đông Xuyên, Long Xuyên</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <p class="footer-text">© 2025 ALO SHIP. Tất cả quyền được bảo lưu.</p>
+        <p class="footer-brand">ALO SHIP - ALO LÀ SHIP!</p>
+      </div>
+    </footer>
+    
+    <div id="mapModal">
+      <div class="modal-content">
+        <div id="map"></div>
+        <button class="close-btn" onclick="closeMap()">Chọn & Đóng</button>
+      </div>
+    </div>
+    
+    <a href="https://kiettrac.github.io/Profile-TracTuanKiet/" target="_blank" class="tech-support-banner">
+      Hỗ trợ kỹ thuật / Thuê viết web (ấn vào đây)
+    </a>
+
+  </body>
+
+  <script>
+    function initMap() {}
+
+    let currentMapTarget = null;
+    let map, marker;
+
+    function handleServiceTypeChange() {
+      const type = document.getElementById("serviceType").value;
+      document.getElementById("productNameContainer").style.display = (type === "mua" || type === "chohang") ? "block" : "none";
+      document.getElementById("quantityContainer").style.display = (type === "chokhach") ? "block" : "none";
+    }
+
+    function openMap(type) {
+      currentMapTarget = type;
+      document.getElementById("mapModal").style.display = "block";
+
+      if (!map) {
+        navigator.geolocation.getCurrentPosition(pos => {
+          const latlng = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+          map = new google.maps.Map(document.getElementById("map"), {
+            center: latlng,
+            zoom: 16,
+            disableDefaultUI: true,
+          });
+          marker = new google.maps.Marker({
+            position: latlng,
+            map: map,
+            draggable: true,
+            animation: google.maps.Animation.DROP,
+          });
+
+          map.addListener("click", (e) => {
+            marker.setPosition(e.latLng);
+          });
+          
+        }, () => {
+           const longXuyenCoords = { lat: 10.37, lng: 105.43 };
+           map = new google.maps.Map(document.getElementById("map"), { center: longXuyenCoords, zoom: 14 });
+           marker = new google.maps.Marker({ position: longXuyenCoords, map: map, draggable: true });
+        });
+      }
+    }
+
+    function closeMap() {
+      if (marker) {
+        const latlng = marker.getPosition();
+        const geocoder = new google.maps.Geocoder();
+        geocoder.geocode({ 'location': latlng }, (results, status) => {
+          let address = `Tọa độ: ${latlng.lat().toFixed(5)}, ${latlng.lng().toFixed(5)}`;
+          if (status === 'OK' && results[0]) {
+            address = results[0].formatted_address;
+          }
+          
+          if (currentMapTarget === "pickup") document.getElementById("pickupPoint").value = address;
+          else document.getElementById("dropoffPoint").value = address;
+
+          document.getElementById("mapModal").style.display = "none";
+        });
+      } else {
+        document.getElementById("mapModal").style.display = "none";
+      }
+    }
+
+    document.getElementById("bookingForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      
+      const submitBtn = document.getElementById("form-submit-btn");
+      const successMessage = document.getElementById("successMessage");
+      const formData = new FormData(this);
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Đang gửi...";
+      successMessage.style.display = 'none';
+
+      const scriptURL = "https://script.google.com/macros/s/AKfycbx3SZCbh9QZyWg9wHrTuL5XUlPNfXcf-8JuxYHZ0jsGdPPIg8H7GZrX7dLvFANa25PwYA/exec";
+      
+      fetch(scriptURL, { method: 'POST', body: formData })
+        .then(response => {
+          console.log('Success!', response);
+          successMessage.style.display = 'block';
+          document.getElementById("bookingForm").reset();
+          handleServiceTypeChange();
+        })
+        .catch(error => {
+          console.error('Error!', error.message);
+          alert("Đã có lỗi xảy ra. Vui lòng thử lại hoặc gọi trực tiếp.");
+        })
+        .finally(() => {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Gửi Yêu Cầu";
+        });
+    });
+
+  </script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&libraries=geocoding"></script>
+</html>
